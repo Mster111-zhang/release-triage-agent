@@ -1,0 +1,31 @@
+{
+  "alert": "12:01 发版后，结算在 12:04 出现支付超时。请核对 12:00 至 12:10 的证据。",
+  "records": [
+    {
+      "id": "release-141",
+      "source": "releases",
+      "at": "12:01",
+      "signal": "payment_timeout_ms",
+      "previous": 1600,
+      "current": 300,
+      "description": "12:01 发布将支付等待上限从 1600 毫秒改为 300 毫秒。"
+    },
+    {
+      "id": "checkout-log-061",
+      "source": "logs",
+      "at": "12:04",
+      "signal": "payment_timeout",
+      "current": 300,
+      "description": "一批结算请求在等待支付响应 300 毫秒时超时。"
+    },
+    {
+      "id": "payment-metric-072",
+      "source": "metrics",
+      "at": "12:06",
+      "signal": "payment_p95_ms",
+      "previous": 465,
+      "current": 477,
+      "description": "支付响应 P95 从 465 毫秒变为 477 毫秒。"
+    }
+  ]
+}

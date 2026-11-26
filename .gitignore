@@ -1,0 +1,10 @@
+.venv/
+.uv-python/
+uv.exe
+__pycache__/
+.idea/
+.env
+
+.env.*
+.pytest_cache/
+*.log

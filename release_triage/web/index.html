@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>发布异常归因 Agent · 张艺豪</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <header class="top">
+    <div class="shell mast">
+      <a class="brand" href="/" aria-label="发布异常归因 Agent 首页">
+        <span class="mark" aria-hidden="true">↳</span>
+        <span>发布异常归因 Agent<small>张艺豪 · 个人项目</small></span>
+      </a>
+      <span class="dataset"><i></i><span id="dataset-label">模拟事故数据</span></span>
+    </div>
+  </header>
+  <main class="shell">
+    <header class="intro">
+      <h1>这次故障，和发版有关吗？</h1>
+      <p>选择演示案例或导入证据。Agent 查询发布变更、错误日志与指标，并在结论中引用查到的记录。</p>
+    </header>
+    <div class="workspace">
+      <section class="card input-card" aria-labelledby="input-title">
+        <h2 id="input-title">告警输入</h2>
+        <form id="investigate">
+          <label for="case">事故场景</label>
+          <select id="case" name="scenario" disabled></select>
+          <div id="upload-panel" class="file-area" hidden>
+            <label for="evidence-file">证据文件（JSON）</label>
+            <input id="evidence-file" type="file" accept=".json,application/json">
+            <p class="small"><a href="/static/example-incident.json" download>下载示例证据包</a>
+              · <span id="file-status" role="status">最多 100 条记录</span></p>
+          </div>
+          <label for="alert">告警描述</label>
+          <textarea id="alert" name="alert" rows="3" maxlength="300" required></textarea>
+          <label for="mode">查询策略</label>
+          <select id="mode" name="mode">
+            <option value="local">本地策略 · 无需密钥</option>
+            <option value="bailian" disabled>百炼模型 · 需本机配置</option>
+          </select>
+          <p id="online-note" class="small" hidden>在线模式会将告警和已查到的证据发送给百炼。</p>
+          <button class="primary" id="submit" type="submit" disabled>开始排查 <span aria-hidden="true">→</span></button>
+          <p class="status" id="status" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+      <section class="card report" aria-labelledby="report-title">
+        <header class="section-head">
+          <h2 id="report-title">诊断报告</h2><span id="verdict" class="pill" hidden></span>
+        </header>
+        <div id="report-empty" class="empty">运行一次排查后，结论和引用会显示在这里。</div>
+        <div id="report-body" hidden>
+          <h3 id="conclusion"></h3>
+          <p id="reason"></p>
+          <div class="action"><strong>建议下一步</strong><p id="action"></p></div>
+          <div id="citations" class="citations" aria-label="报告引用的证据"></div>
+        </div>
+      </section>
+    </div>
+    <div class="workspace lower">
+      <section class="card trace" aria-labelledby="trace-title">
+        <header class="section-head"><h2 id="trace-title">工具调用轨迹</h2><span id="call-count" class="small"></span></header>
+        <ol id="trace"></ol>
+      </section>
+      <section class="card" aria-labelledby="evidence-title">
+        <header class="section-head"><h2 id="evidence-title">查询到的证据</h2><span id="evidence-count" class="small"></span></header>
+        <div id="evidence"></div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
