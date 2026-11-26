@@ -60,21 +60,36 @@ function showReport(report) {
   }));
 }
 
+function clearReport() {
+  byId("report-empty").hidden = false;
+  byId("report-body").hidden = true;
+  byId("verdict").hidden = true;
+  for (const id of ["conclusion", "reason", "action", "call-count", "evidence-count", "status"]) {
+    byId(id).textContent = "";
+  }
+  for (const id of ["citations", "trace", "evidence"]) {
+    byId(id).replaceChildren();
+  }
+}
+
 function setAlert() {
+  clearReport();
   const custom = select.value === "upload";
   byId("upload-panel").hidden = !custom;
   byId("dataset-label").textContent = custom ? "导入证据" : "模拟事故数据";
   alertBox.value = custom ? imported?.alert || "" : scenarios.find((item) => item.id === select.value)?.alert || "";
-  submit.disabled = custom && !imported;
+  submit.disabled = !select.value || (custom && !imported);
   status.textContent = "";
 }
 
 async function investigate() {
+  if (!select.value || submit.disabled) return;
   const body = {scenario: select.value, alert: alertBox.value, mode: mode.value};
   if (body.scenario === "upload") {
     if (!imported) return;
     body.evidence = imported.records;
   }
+  clearReport();
   const controls = [submit, select, upload, alertBox, mode];
   for (const control of controls) control.disabled = true;
   status.textContent = "正在查询事故证据…";
@@ -103,6 +118,8 @@ async function investigate() {
 }
 
 select.addEventListener("change", setAlert);
+mode.addEventListener("change", clearReport);
+alertBox.addEventListener("input", clearReport);
 mode.addEventListener("change", () => {
   byId("online-note").hidden = mode.value !== "bailian";
 });
@@ -143,6 +160,7 @@ async function initialize() {
     const data = await response.json();
     scenarios = data.cases;
     select.replaceChildren(
+      new Option("请选择事故场景", ""),
       ...scenarios.map((item) => new Option(item.label, item.id)),
       new Option("导入自定义证据", "upload"),
     );
@@ -153,7 +171,6 @@ async function initialize() {
     }
     select.disabled = false;
     setAlert();
-    await investigate();
   } catch {
     status.textContent = "无法加载演示场景，请刷新页面。";
   }

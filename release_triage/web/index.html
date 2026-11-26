@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>发布异常归因 Agent · 张艺豪</title>
   <link rel="stylesheet" href="/static/style.css">
-  <script src="/static/app.js" defer></script>
+  <script src="/static/app.js?v=manual-start-1" defer></script>
 </head>
 <body>
   <header class="top">
@@ -27,7 +27,7 @@
         <h2 id="input-title">告警输入</h2>
         <form id="investigate">
           <label for="case">事故场景</label>
-          <select id="case" name="scenario" disabled></select>
+          <select id="case" name="scenario" required disabled></select>
           <div id="upload-panel" class="file-area" hidden>
             <label for="evidence-file">证据文件（JSON）</label>
             <input id="evidence-file" type="file" accept=".json,application/json">
@@ -50,7 +50,7 @@
         <header class="section-head">
           <h2 id="report-title">诊断报告</h2><span id="verdict" class="pill" hidden></span>
         </header>
-        <div id="report-empty" class="empty">运行一次排查后，结论和引用会显示在这里。</div>
+        <div id="report-empty" class="empty">请选择事故场景，点击“开始排查”后查看结论与引用。</div>
         <div id="report-body" hidden>
           <h3 id="conclusion"></h3>
           <p id="reason"></p>
